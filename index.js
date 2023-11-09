@@ -60,7 +60,6 @@ app.get('/foods',async(req, res)=>{
 //get single food for detail
 app.get('/foods/:id',async(req, res)=>{
   const id=req.params.id;
-  console.log(id)
   const cursor = {_id: new ObjectId(id)}
   const result = await foodCollection.findOne(cursor);
   res.send(result)
@@ -69,7 +68,6 @@ app.get('/foods/:id',async(req, res)=>{
 
 //get some specific data by email
 app.get('/foods', async(req, res)=>{
-  console.log(req.query.email)
  let query = {};
  if(req.query?.email){
   query = {donatorEmail: req.query.email}
@@ -81,7 +79,6 @@ const cursor =foodCollection.find(query);
 
 //get spcifiq request food by email
 app.get('/requestFood', async(req, res)=>{
-  console.log(req.query.email)
  let query = {};
  if(req.query?.email){
   query = {userEmail: req.query.email}
@@ -103,13 +100,44 @@ app.delete ('/foods/:id', async(req, res)=>{
 //delete one food my foodrRequestCollection if status:available and id maching
 app.delete ('/requestFood/:id', async(req, res)=>{
 const id = req.params.id;
-console.log(id)
 const result = await foodRequestCollection.deleteOne({
   _id: new ObjectId(id),
   foodStatus: 'Available'
 });
   res.send(result);
 })
+
+
+
+//Put for updated 
+app.put('/foods/:id', async(req, res) =>{
+  const id = req.params.id;
+  const filter ={_id: new ObjectId(id)}
+  const options = {upsert: true};
+  const updatefood = req.body;
+  console.log(updatefood)
+  const food ={
+    $set: {
+      foodName: updatefood.name,
+      image: updatefood.image,
+      quantity: updatefood.quantity,
+      pickup: updatefood.pickup,
+      date: updatefood.date,
+      note: updatefood.note,
+      status: updatefood.status,
+      donatorImage:updatefood.donatorImage,
+      donatorName: updatefood.donatorName,
+      donatorEmail:updatefood.donatorEmail
+
+    }
+  }
+  const result = await foodCollection.updateOne(filter,food,options)
+  res.send(result)
+})
+
+
+
+
 
 
     // Send a ping to confirm a successful connection
