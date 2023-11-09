@@ -67,6 +67,27 @@ app.get('/foods/:id',async(req, res)=>{
 })
 
 
+//get some specific data by email
+app.get('/foods', async(req, res)=>{
+  console.log(req.query.email)
+ let query = {};
+ if(req.query?.email){
+  query = {donatorEmail: req.query.email}
+ }
+const cursor =foodCollection.find(query);
+  const result = await cursor.toArray();
+  res.send(result);
+})
+
+
+//delete one foods
+app.delete ('/foods/:id', async(req, res)=>{
+  const id = req.params.id;
+  const query = {_id: new ObjectId(id)}
+  const result = await foodCollection.deleteOne(query);
+  res.send(result);
+})
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
