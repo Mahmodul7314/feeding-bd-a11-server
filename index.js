@@ -79,12 +79,35 @@ const cursor =foodCollection.find(query);
   res.send(result);
 })
 
+//get spcifiq request food by email
+app.get('/requestFood', async(req, res)=>{
+  console.log(req.query.email)
+ let query = {};
+ if(req.query?.email){
+  query = {userEmail: req.query.email}
+ }
+const cursor =foodRequestCollection.find(query);
+  const result = await cursor.toArray();
+  res.send(result);
+})
 
-//delete one foods
+
+//delete one foods for manage food
 app.delete ('/foods/:id', async(req, res)=>{
   const id = req.params.id;
   const query = {_id: new ObjectId(id)}
   const result = await foodCollection.deleteOne(query);
+  res.send(result);
+})
+
+//delete one food my foodrRequestCollection if status:available and id maching
+app.delete ('/requestFood/:id', async(req, res)=>{
+const id = req.params.id;
+console.log(id)
+const result = await foodRequestCollection.deleteOne({
+  _id: new ObjectId(id),
+  foodStatus: 'Available'
+});
   res.send(result);
 })
 
