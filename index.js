@@ -32,7 +32,7 @@ async function run() {
 
 
     const foodCollection = client.db('feedingBD').collection('foods');
-
+    const foodRequestCollection = client.db('feedingBD').collection('requestFood')
 
 
 app.post('/foods',async(req, res)=>{
@@ -40,6 +40,14 @@ app.post('/foods',async(req, res)=>{
 const result = await foodCollection.insertOne(food);
 res.send(result)
 })
+
+app.post('/foodsrequest',async(req, res)=>{
+  const foodrequest = req.body;
+  const result = await foodRequestCollection.insertOne(foodrequest);
+  res.send(result)
+})
+
+
 
 
 //get all food for available food
