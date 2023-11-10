@@ -118,7 +118,7 @@ app.put('/foods/:id', async(req, res) =>{
   console.log(updatefood)
   const food ={
     $set: {
-      foodName: updatefood.name,
+      foodName: updatefood.foodName,
       image: updatefood.image,
       quantity: updatefood.quantity,
       pickup: updatefood.pickup,
