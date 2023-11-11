@@ -88,7 +88,13 @@ const cursor =foodRequestCollection.find(query);
   res.send(result);
 })
 
-
+//get one requestFood for manage Food Detail
+app.get('/requestFood/:id', async (req, res) => {
+  const id = req.params.id;
+  const cursor = {foodId:id};
+  const result = await foodRequestCollection.find(cursor).toArray();
+  res.send(result);
+});
 //delete one foods for manage food
 app.delete ('/foods/:id', async(req, res)=>{
   const id = req.params.id;
@@ -135,7 +141,22 @@ app.put('/foods/:id', async(req, res) =>{
   res.send(result)
 })
 
+//Patch for manage my food manage button 
+app.patch('/requestFood/:id',async(req, res)=>{
+  const id = req.params.id;
+  console.log(id)
+  const filter = {_id: new ObjectId(id)};
+  const updatedFood = req.body;
+  console.log(updatedFood);
+  const updateDoc = {
+    $set:{
+      foodStatus: updatedFood.foodStatus
+    },
+  };
+  const result = await foodRequestCollection.updateOne(filter,updateDoc)
+  res.send(result)
 
+})
 
 
 
