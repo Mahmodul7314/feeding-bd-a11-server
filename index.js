@@ -48,7 +48,7 @@ app.post('/foodsrequest',async(req, res)=>{
 
 
 
-//get all food for available food
+//get all food for available food//
 app.get('/foods',async(req, res)=>{
  const cursor =foodCollection.find()
   const result = await cursor.toArray()
